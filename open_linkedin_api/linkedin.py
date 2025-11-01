@@ -86,13 +86,17 @@ class Linkedin(object):
         evade()
 
         url = f"{self.client.API_BASE_URL if not base_request else self.client.LINKEDIN_BASE_URL}{uri}"
-        res =  self.client.session.get(url, **kwargs)
+        res = self.client.session.get(url, **kwargs)
 
         if res.status_code == 401:
             raise UnauthorizedException()
 
-        if not (200 <= res.status_code < 300):  # I don't know all status_codes successfully of LkIn
-            raise Exception(f"Request failed with status code {res.status_code}: {res.text}")
+        if not (
+            200 <= res.status_code < 300
+        ):  # I don't know all status_codes successfully of LkIn
+            raise Exception(
+                f"Request failed with status code {res.status_code}: {res.text}"
+            )
 
         return res
 
@@ -114,8 +118,12 @@ class Linkedin(object):
         if res.status_code == 401:
             raise UnauthorizedException()
 
-        if not (200 <= res.status_code < 300): # I don't know all status_codes successfully of LkIn
-            raise Exception(f"Request failed with status code {res.status_code}: {res.text}")
+        if not (
+            200 <= res.status_code < 300
+        ):  # I don't know all status_codes successfully of LkIn
+            raise Exception(
+                f"Request failed with status code {res.status_code}: {res.text}"
+            )
 
         return res
 
