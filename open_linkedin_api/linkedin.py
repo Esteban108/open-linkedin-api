@@ -12,7 +12,7 @@ from time import sleep
 from urllib.parse import urlencode, quote
 from typing import Dict, Union, Optional, List, Literal
 
-from open_linkedin_api.client import Client
+from open_linkedin_api.client import Client, UnauthorizedException
 from open_linkedin_api.utils.helpers import (
     get_id_from_urn,
     get_urn_from_raw_update,
@@ -86,7 +86,15 @@ class Linkedin(object):
         evade()
 
         url = f"{self.client.API_BASE_URL if not base_request else self.client.LINKEDIN_BASE_URL}{uri}"
-        return self.client.session.get(url, **kwargs)
+        res =  self.client.session.get(url, **kwargs)
+
+        if res.status_code == 401:
+            raise UnauthorizedException()
+
+        if not (200 <= res.status_code < 300):  # I don't know all status_codes successfully of LkIn
+            raise Exception(f"Request failed with status code {res.status_code}: {res.text}")
+
+        return res
 
     def _cookies(self):
         """Return client cookies"""
@@ -101,7 +109,15 @@ class Linkedin(object):
         evade()
 
         url = f"{self.client.API_BASE_URL if not base_request else self.client.LINKEDIN_BASE_URL}{uri}"
-        return self.client.session.post(url, **kwargs)
+
+        res = self.client.session.post(url, **kwargs)
+        if res.status_code == 401:
+            raise UnauthorizedException()
+
+        if not (200 <= res.status_code < 300): # I don't know all status_codes successfully of LkIn
+            raise Exception(f"Request failed with status code {res.status_code}: {res.text}")
+
+        return res
 
     def get_profile_posts(
         self,
