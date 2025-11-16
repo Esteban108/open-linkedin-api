@@ -164,7 +164,7 @@ class Linkedin(object):
         res = self._fetch(url, params=url_params)
         data = res.json()
         if data and "status" in data and data["status"] != 200:
-            self.logger.info("request failed: {}".format(data["message"]))
+            self.logger.info(f"request failed:{data.get('status')} - {data.get('message')}")
             return [{}]
         while data and data["metadata"]["paginationToken"] != "":
             if len(data["elements"]) >= post_count:
@@ -768,7 +768,7 @@ class Linkedin(object):
 
         data = res.json()
         if data and "status" in data and data["status"] != 200:
-            self.logger.info("request failed: {}".format(data["message"]))
+            self.logger.info(f"request failed:{data.get('status')} - {data.get('message')}")
             return {}
 
         # massage [profile] data
@@ -1712,7 +1712,7 @@ class Linkedin(object):
         data = res.json()
 
         if data and "status" in data and data["status"] != 200:
-            self.logger.info("request failed: {}".format(data["message"]))
+            self.logger.info(f"request failed:{data.get('status')} - {data.get('message')}")
             return {}
 
         return data
