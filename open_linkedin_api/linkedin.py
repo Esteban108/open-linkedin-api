@@ -449,6 +449,7 @@ class Linkedin(object):
                     "jobtitle": (item.get("primarySubtitle") or {}).get("text", None),
                     "location": (item.get("secondarySubtitle") or {}).get("text", None),
                     "name": (item.get("title") or {}).get("text", None),
+                    "navigation_url": item.get("navigationUrl", None)
                 }
             )
 
